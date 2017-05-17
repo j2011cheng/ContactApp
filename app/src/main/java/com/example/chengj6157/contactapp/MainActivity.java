@@ -1,12 +1,14 @@
 package com.example.chengj6157.contactapp;
 
 import android.database.Cursor;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,9 +38,11 @@ public class MainActivity extends AppCompatActivity {
 
         if(isInserted == true){
             Log.d("MyContact", "Successfully inserted " + editName.getText().toString() + " " + editAge.getText().toString() + " " + editAddress.getText().toString());
+            Toast.makeText(getApplicationContext(), "Successfully inserted " + editName.getText().toString() + " " + editAge.getText().toString() + " " + editAddress.getText().toString(), Toast.LENGTH_SHORT).show();
         }
         else{
             Log.d("MyContact", "Failure inserting data");
+            Toast.makeText(getApplicationContext(), "Failure inserting data", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -51,12 +55,29 @@ public class MainActivity extends AppCompatActivity {
 
         StringBuffer buffer = new StringBuffer();
         //loop with res using moveToNext
+        for(int i = 0; i < res.getColumnCount(); i++){
+            buffer.append(res.getColumnCount());
+            buffer.append("\r");
+        }
+        buffer.append("\n");
         //appent COL to buffer
+        res.moveToFirst();
+        while(res.moveToNext()){
+            for(int j = 0; j < res.getColumnCount(); j++){
+                buffer.append(res.getColumnCount());
+                buffer.append("\t");
+            }
+            buffer.append("\n");
+        }
         //display message using showMessage
-        showMessage("Data", buffer.toString());
+        showMessage("Contacts", buffer.toString());
     }
 
-    private void showMessage(String title, String s) {
-        //AlertDialog.Builder
+    private void showMessage(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
     }
 }
