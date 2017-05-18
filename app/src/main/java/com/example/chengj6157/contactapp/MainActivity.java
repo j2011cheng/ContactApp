@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editName;
     EditText editAge;
     EditText editAddress;
+    EditText searchName;
     Button btnAddData;
 
     @Override
@@ -29,14 +30,13 @@ public class MainActivity extends AppCompatActivity {
         editName = (EditText) findViewById(R.id.editText_name);
         editAge = (EditText) findViewById(R.id.editText_age);
         editAddress = (EditText) findViewById(R.id.editText_address);
+        searchName = (EditText) findViewById(R.id.editText_search);
     }
 
     public void addData(View v){
-        boolean isInserted = myDb.insertData(myDb.COL_2, editName.getText().toString()) &&
-                myDb.insertData(myDb.COL_3, editAge.getText().toString()) &&
-                myDb.insertData(myDb.COL_4, editAddress.getText().toString());
+        boolean isInserted = myDb.insertData(editName.getText().toString(), editAge.getText().toString(), editAddress.getText().toString());
 
-        if(isInserted == true){
+        if(isInserted){
             Log.d("MyContact", "Successfully inserted " + editName.getText().toString() + " " + editAge.getText().toString() + " " + editAddress.getText().toString());
             Toast.makeText(getApplicationContext(), "Successfully inserted " + editName.getText().toString() + " " + editAge.getText().toString() + " " + editAddress.getText().toString(), Toast.LENGTH_SHORT).show();
         }
@@ -56,19 +56,19 @@ public class MainActivity extends AppCompatActivity {
         StringBuffer buffer = new StringBuffer();
         //loop with res using moveToNext
         for(int i = 0; i < res.getColumnCount(); i++){
-            buffer.append(res.getColumnCount());
+            buffer.append(res.getColumnName(i));
             buffer.append("\r");
         }
         buffer.append("\n");
         //appent COL to buffer
         res.moveToFirst();
-        while(res.moveToNext()){
+        do{
             for(int j = 0; j < res.getColumnCount(); j++){
-                buffer.append(res.getColumnCount());
+                buffer.append(res.getString(j));
                 buffer.append("\t");
             }
             buffer.append("\n");
-        }
+        }while(res.moveToNext());
         //display message using showMessage
         showMessage("Contacts", buffer.toString());
     }
@@ -79,5 +79,18 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle(title);
         builder.setMessage(message);
         builder.show();
+    }
+
+    public void searchContact(View v){
+        Cursor res = myDb.getAllData();
+        res.moveToFirst();
+        StringBuffer buffer = new StringBuffer();
+        for(int i = 0; i < res.getColumnCount(); i++){
+            if(res.getString(res.getColumnIndex("NAME")).indexOf(searchName.getText().toString()) >= 0){
+                buffer.append(res.getColumnName(i));
+                buffer.append(res.getString(i));
+            }
+        }
+        showMessage("Search Contact", buffer.toString());
     }
 }

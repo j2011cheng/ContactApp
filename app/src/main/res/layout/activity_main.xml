@@ -29,12 +29,12 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Data"
+        android:text="Add Contact"
         android:id="@+id/btnAddData"
         android:onClick="addData"
+        android:layout_marginTop="34dp"
         android:layout_below="@+id/editText_address"
-        android:layout_alignStart="@+id/editText_age"
-        android:layout_marginTop="41dp" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -73,11 +73,28 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View Data"
+        android:text="View Contacts"
         android:id="@+id/btnViewData"
-        android:layout_marginStart="59dp"
+        android:clickable="false"
+        android:onClick="viewData"
         android:layout_alignTop="@+id/btnAddData"
-        android:layout_toEndOf="@+id/btnAddData"
-        android:clickable="false" />
+        android:layout_alignEnd="@+id/editText_address" />
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText_search"
+        android:layout_marginTop="24dp"
+        android:layout_below="@+id/btnAddData"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search Contact"
+        android:id="@+id/btnSearchContact"
+        android:layout_below="@+id/editText_search"
+        android:layout_centerHorizontal="true"
+        android:onClick="searchContact" />
 
 </RelativeLayout>
