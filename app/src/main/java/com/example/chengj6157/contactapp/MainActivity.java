@@ -85,12 +85,14 @@ public class MainActivity extends AppCompatActivity {
         Cursor res = myDb.getAllData();
         res.moveToFirst();
         StringBuffer buffer = new StringBuffer();
-        for(int i = 0; i < res.getColumnCount(); i++){
-            if(res.getString(res.getColumnIndex("NAME")).indexOf(searchName.getText().toString()) >= 0){
-                buffer.append(res.getColumnName(i));
-                buffer.append(res.getString(i));
+        do {
+            if(res.getString(res.getColumnIndex("NAME")).equals(searchName.getText().toString())){
+                for(int i = 0; i < res.getColumnCount(); i++){
+                    buffer.append(res.getString(i));
+                    buffer.append(" ");
+                }
             }
-        }
+        }while(res.moveToNext());
         showMessage("Search Contact", buffer.toString());
     }
 }
