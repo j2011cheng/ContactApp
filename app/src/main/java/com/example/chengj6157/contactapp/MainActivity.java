@@ -1,6 +1,7 @@
 package com.example.chengj6157.contactapp;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -94,5 +95,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }while(res.moveToNext());
         showMessage("Search Contact", buffer.toString());
+    }
+
+    public void clearContacts(View v){
+        SQLiteDatabase res = myDb.getWritableDatabase();
+        res.execSQL("DELETE FROM " + myDb.TABLE_NAME);
+        Toast.makeText(getApplicationContext(), "Contacts Cleared", Toast.LENGTH_SHORT);
+        myDb.currentID = 1;
+        res.close();
     }
 }
